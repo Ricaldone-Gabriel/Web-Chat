@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        A
+    </div>
+</body>
+<script>
+    let webSocket = new WebSocket('ws://localhost:8080/ws');
+    const riceviUtente = new Event("riceviUtente")
+
+    let userID
+    // Quando la connessione WebSocket è aperta
+    webSocket.addEventListener('open', (event) => {
+      console.log('Connessione WebSocket aperta.'); 
+    });
+
+    webSocket.addEventListener('message', (event) => {
+        console.log(event.data)
+    })
+</script>
+</html>
