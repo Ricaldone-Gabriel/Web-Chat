@@ -1,28 +1,67 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Document</title>
-</head>
+<%- include("../public/partials/header.ejs") %>
 <body>
     <div>
-        A
+        
+        
     </div>
+<div class="container ">
+  <div class="row">
+    <div class="col">
+      <div class="container text-center p-1 chatBox">
+        <div class ="row">
+            <div class="col">
+                <div style="overflow-y: scroll; height:80vh;" class="chat" id="ChatBox">
+
+                </div>
+            </div>
+        </div>
+        <div class ="row">
+            <div class="col">
+                <div>
+                    <input type="text" class="chatInput m-2" id="TextBox">
+                    <button onclick="send()" class="chatSend"> ></button>
+                </div>
+            </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 <script>
-    let webSocket = new WebSocket('ws://localhost:8080/ws');
-    const riceviUtente = new Event("riceviUtente")
+    let webSocket = new WebSocket(window.location.href.replace(/^http/, 'ws') + 'ws');
+    console.log(window.location.href.replace(/^http/, 'ws') + '/ws' + " " + webSocket)
+    let TextBox = document.getElementById("TextBox")
+    let ChatBox = document.getElementById("ChatBox")
 
-    let userID
+    function send() {
+        if(!(TextBox.value.length === 0)) {
+            webSocket.send(TextBox.value);
+            TextBox.value = ""
+        }
+    }
+
+    TextBox.addEventListener('keydown', (event)=>{
+        if(event.keyCode==13) {
+            send()
+        }
+    })
+
     // Quando la connessione WebSocket è aperta
     webSocket.addEventListener('open', (event) => {
       console.log('Connessione WebSocket aperta.'); 
     });
 
     webSocket.addEventListener('message', (event) => {
-        console.log(event.data)
+        let messageInsert = document.createElement("p")
+        let message = JSON.parse(event.data)
+        messageInsert.innerHTML = message[0] + ": " + message[1];
+        messageInsert.className = "message"
+        ChatBox.appendChild(messageInsert)
+        ChatBox.scrollTop = ChatBox.scrollHeight;
     })
+
 </script>
 </html>
