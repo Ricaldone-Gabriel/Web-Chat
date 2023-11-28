@@ -12,7 +12,7 @@ const port = 8080;
 
 //Struttura database
 //accountdb
-//|-Accounts
+//|-accounts
 //  |-id
 //  |-username
 //  |-password
